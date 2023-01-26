@@ -47,9 +47,9 @@ function MoviesItems({ movies }) {
   return (
     <>
       {movies && (
-        <ul>
+        <ul className={styles.list}>
           {movies.map(movie => (
-            <li key={movie.id}>
+            <li key={movie.id} className={styles.list__item}>
               <Link to={`/movies/${movie.id}`}>
                 <img
                   src={
@@ -58,7 +58,11 @@ function MoviesItems({ movies }) {
                       : 'https://www.chanchao.com.tw/images/default.jpg'
                   }
                 />
-                <p>{movie.title}</p>
+                <div className={styles.overlay}>
+                  <p className={styles.list__item_title}>
+                    {movie.title || movie.name}
+                  </p>
+                </div>
               </Link>
             </li>
           ))}

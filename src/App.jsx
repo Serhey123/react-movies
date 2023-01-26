@@ -5,29 +5,29 @@ import Container from './components/Container/Container';
 import Navigation from './components/Navigation/Navigation';
 import HomePage from './components/HomePage/HomePage';
 import MoviesPage from './components/MoviesPage/MoviesPage';
-import MovieDetailsPage from './components/MovieDetailsPage/MovieDetailsPage'
+import MovieDetailsPage from './components/MovieDetailsPage/MovieDetailsPage';
 
 class App extends Component {
   render() {
     return (
-        <Container>
-          <Navigation/>
+      <Container>
+        <Navigation />
+        <main className="main">
           <Switch>
+            <Route path="/movies/:movieId">
+              <MovieDetailsPage />
+            </Route>
 
-          <Route path='/movies/:movieId'>
-            <MovieDetailsPage/>
-          </Route>
+            <Route path="/movies">
+              <MoviesPage />
+            </Route>
 
-          <Route path='/movies'>
-            <MoviesPage/>
-          </Route>
-
-          <Route path='/' >
-            <HomePage/>
-          </Route>
-
+            <Route path="/">
+              <HomePage />
+            </Route>
           </Switch>
-        </Container>
+        </main>
+      </Container>
     );
   }
 }
