@@ -32,3 +32,20 @@
   object-fit: contain;
   margin: 0 auto;
 }
+
+.links {
+  padding: 20px;
+  width: 200px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.link {
+  font-size: 16px;
+  color: black;
+  transition: all 0.4s ease;
+}
+.link:hover {
+  color: grey;
+  transform: scale(1.05);
+}

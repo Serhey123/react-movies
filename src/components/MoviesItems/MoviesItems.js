@@ -11,6 +11,7 @@ export default function MoviesItems({ movies }) {
             <li key={movie.id} className={styles.list__item}>
               <Link to={`/movies/${movie.id}`}>
                 <img
+                  className={styles.img}
                   src={
                     movie.poster_path
                       ? `https://image.tmdb.org/t/p/w300${movie.poster_path}`

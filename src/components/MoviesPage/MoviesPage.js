@@ -1,15 +1,18 @@
-import styles from './MoviesPage.module.css';
 import { useState, useEffect } from 'react';
 import { fetchMovie } from '../../services/fetchService';
 import { useHistory, useLocation } from 'react-router-dom';
 
+import { RotatingLines } from 'react-loader-spinner';
+
 import MoviesItems from '../MoviesItems/MoviesItems';
+import Searchbar from './Searchbar';
 
 export default function MoviesPage() {
   const history = useHistory();
   const location = useLocation();
 
   const [movies, setMovies] = useState(null);
+  const [status, setStatus] = useState('idle');
 
   const query = new URLSearchParams(location.search).get('query');
 
@@ -21,44 +24,32 @@ export default function MoviesPage() {
     if (!query) {
       return;
     }
-    fetchMovie(query).then(res => setMovies(res.results));
+    setStatus('pending');
+    fetchMovie(query).then(res => {
+      if (res.results.length === 0) {
+        setStatus('error');
+        return;
+      }
+      setStatus('resolved');
+      setMovies(res.results);
+    });
   }, [query]);
 
   console.log(movies);
   return (
     <>
       <Searchbar onSubmit={onSubmit} />
-      <MoviesItems movies={movies} />
+      {status === 'resolved' && <MoviesItems movies={movies} />}
+      {status === 'pending' && (
+        <RotatingLines
+          strokeColor="grey"
+          strokeWidth="5"
+          animationDuration="0.75"
+          width="50"
+          visible={true}
+        />
+      )}
+      {status === 'error' && <p>Sorry, nothing found :(</p>}
     </>
-  );
-}
-
-function Searchbar({ onSubmit }) {
-  const [query, setQuery] = useState('');
-
-  const submitHandler = e => {
-    e.preventDefault();
-
-    if (query.trim() === '') {
-      return;
-    }
-
-    onSubmit(query);
-
-    setQuery('');
-  };
-  return (
-    <form onSubmit={submitHandler} className={styles.form}>
-      <input
-        className={styles.input}
-        value={query}
-        type="text"
-        autoComplete="off"
-        autoFocus
-        placeholder="Search movies"
-        onChange={e => setQuery(e.currentTarget.value.toLowerCase())}
-      />
-      <button type="submit" className={styles.button}></button>
-    </form>
   );
 }
