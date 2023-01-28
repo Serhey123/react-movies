@@ -7,6 +7,7 @@ import HomePage from './components/HomePage/HomePage';
 import MoviesPage from './components/MoviesPage/MoviesPage';
 import MovieDetailsPage from './components/MovieDetailsPage/MovieDetailsPage';
 
+
 class App extends Component {
   render() {
     return (

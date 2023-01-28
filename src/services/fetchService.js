@@ -20,3 +20,17 @@ export function fetchMovieById(id) {
     res.json(),
   );
 }
+
+export function fetchMovieCast(id) {
+  return fetch(`
+    https://api.themoviedb.org/3/movie/${id}/credits?api_key=${KEY}`).then(
+    res => res.json(),
+  );
+}
+
+export function fetchMovieReview(id) {
+  return fetch(`
+  https://api.themoviedb.org/3/movie/${id}/reviews?api_key=${KEY}`).then(res =>
+    res.json(),
+  );
+}
