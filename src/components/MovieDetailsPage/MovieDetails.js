@@ -1,9 +1,13 @@
 import styles from './MovieDetailsPage.module.css';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 
 export default function MovieDetails({ movie, movieId }) {
+  const history = useHistory();
   return (
     <>
+      <button type="button" onClick={history.goBack} className={styles.button}>
+        Go Back
+      </button>
       <div className={styles.section}>
         <div>
           <img
@@ -27,7 +31,9 @@ export default function MovieDetails({ movie, movieId }) {
               <h3 className={styles.title}>Genres</h3>
               <ul>
                 {movie.genres.map(el => (
-                  <li key={el.id}>{el.name}</li>
+                  <li key={el.id} className={styles.list__item}>
+                    {el.name}
+                  </li>
                 ))}
               </ul>
             </>
@@ -38,7 +44,9 @@ export default function MovieDetails({ movie, movieId }) {
               <h3 className={styles.title}>Countries</h3>
               <ul>
                 {movie.production_countries.map(el => (
-                  <li key={el.iso_3166_1}>{el.name}</li>
+                  <li key={el.iso_3166_1} className={styles.list__item}>
+                    {el.name}
+                  </li>
                 ))}
               </ul>
             </>
