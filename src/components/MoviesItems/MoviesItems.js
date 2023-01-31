@@ -1,15 +1,22 @@
 import styles from './MoviesItems.module.css';
 
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 
 export default function MoviesItems({ movies }) {
+  const location = useLocation();
+
   return (
     <>
       {movies && (
         <ul className={styles.list}>
           {movies.map(movie => (
             <li key={movie.id} className={styles.list__item}>
-              <Link to={`/movies/${movie.id}`}>
+              <Link
+                to={{
+                  pathname: `/movies/${movie.id}`,
+                  state: { from: location },
+                }}
+              >
                 <img
                   className={styles.img}
                   src={

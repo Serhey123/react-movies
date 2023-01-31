@@ -4,7 +4,7 @@ import { Switch, Route } from 'react-router-dom';
 import Container from './components/Container/Container';
 import Navigation from './components/Navigation/Navigation';
 
-import { RotatingLines } from 'react-loader-spinner';
+import { Oval } from 'react-loader-spinner';
 
 const HomePage = lazy(() => import('./components/HomePage/HomePage.js'));
 const MoviesPage = lazy(() => import('./components/MoviesPage/MoviesPage.js'));
@@ -20,13 +20,15 @@ class App extends Component {
         <main className="main">
           <Suspense
             fallback={
-              <RotatingLines
-                strokeColor="grey"
-                strokeWidth="5"
-                animationDuration="0.75"
-                width="50"
-                visible={true}
-              />
+              <Oval
+              height={50}
+              width={50}
+              color="#000"
+              wrapperStyle={{ display: 'flex', justifyContent: 'center' }}
+              secondaryColor="#f0"
+              strokeWidth={4}
+              strokeWidthSecondary={4}
+            />
             }
           >
             <Switch>

@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { fetchMovie } from '../../services/fetchService';
 import { useHistory, useLocation } from 'react-router-dom';
 
-import { RotatingLines } from 'react-loader-spinner';
+import { Oval } from 'react-loader-spinner';
 
 import MoviesItems from '../MoviesItems/MoviesItems';
 import Searchbar from './Searchbar';
@@ -35,18 +35,19 @@ export default function MoviesPage() {
     });
   }, [query]);
 
-  console.log(movies);
   return (
     <>
       <Searchbar onSubmit={onSubmit} />
       {status === 'resolved' && <MoviesItems movies={movies} />}
       {status === 'pending' && (
-        <RotatingLines
-          strokeColor="grey"
-          strokeWidth="5"
-          animationDuration="0.75"
-          width="50"
-          visible={true}
+        <Oval
+          height={50}
+          width={50}
+          color="#000"
+          wrapperStyle={{ display: 'flex', justifyContent: 'center' }}
+          secondaryColor="#f0"
+          strokeWidth={4}
+          strokeWidthSecondary={4}
         />
       )}
       {status === 'error' && <p>Sorry, nothing found :(</p>}

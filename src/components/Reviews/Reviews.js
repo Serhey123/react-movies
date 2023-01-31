@@ -2,7 +2,7 @@ import styles from './Reviews.module.css';
 import { useState, useEffect } from 'react';
 import { fetchMovieReview } from '../../services/fetchService';
 
-import { RotatingLines } from 'react-loader-spinner';
+import { Oval } from 'react-loader-spinner';
 
 export default function Reviews({ id }) {
   const [reviews, setReviews] = useState(null);
@@ -11,7 +11,6 @@ export default function Reviews({ id }) {
     setStatus('pending');
     fetchMovieReview(id).then(res => {
       if (res.results.length === 0) {
-        console.log();
         setStatus('error');
         return;
       }
@@ -19,7 +18,7 @@ export default function Reviews({ id }) {
       setStatus('resolved');
     });
   }, []);
-  console.log(reviews);
+
   if (status === 'resolved') {
     return (
       <ul>
@@ -35,12 +34,14 @@ export default function Reviews({ id }) {
 
   if (status === 'pending') {
     return (
-      <RotatingLines
-        strokeColor="grey"
-        strokeWidth="5"
-        animationDuration="0.75"
-        width="50"
-        visible={true}
+      <Oval
+        height={50}
+        width={50}
+        color="#000"
+        wrapperStyle={{ display: 'flex', justifyContent: 'center' }}
+        secondaryColor="#f0"
+        strokeWidth={4}
+        strokeWidthSecondary={4}
       />
     );
   }

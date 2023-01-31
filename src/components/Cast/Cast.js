@@ -2,7 +2,7 @@ import styles from './Cast.module.css';
 import { useState, useEffect } from 'react';
 import { fetchMovieCast } from '../../services/fetchService';
 
-import { RotatingLines } from 'react-loader-spinner';
+import { Oval } from 'react-loader-spinner';
 
 export default function Cast({ id }) {
   const [actors, setActors] = useState(null);
@@ -18,7 +18,7 @@ export default function Cast({ id }) {
       setStatus('resolved');
     });
   }, []);
-  console.log(actors);
+
   if (status === 'resolved') {
     return (
       <>
@@ -46,12 +46,14 @@ export default function Cast({ id }) {
 
   if (status === 'pending') {
     return (
-      <RotatingLines
-        strokeColor="grey"
-        strokeWidth="5"
-        animationDuration="0.75"
-        width="50"
-        visible={true}
+      <Oval
+        height={50}
+        width={50}
+        color="#000"
+        wrapperStyle={{ display: 'flex', justifyContent: 'center' }}
+        secondaryColor="#f0"
+        strokeWidth={4}
+        strokeWidthSecondary={4}
       />
     );
   }

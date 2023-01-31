@@ -1,8 +1,12 @@
-import { useParams, Switch, Route } from 'react-router-dom';
+import {
+  useParams,
+  Switch,
+  Route,
+  useLocation,
+  useHistory,
+} from 'react-router-dom';
 import { useEffect, useState, lazy, Suspense } from 'react';
-
-import { RotatingLines } from 'react-loader-spinner';
-
+import { Oval } from 'react-loader-spinner';
 import { fetchMovieById } from '../../services/fetchService';
 import MovieDetails from './MovieDetails';
 
@@ -12,10 +16,10 @@ const Reviews = lazy(() => import('../Reviews/Reviews.js'));
 export default function MovieDetailsPage() {
   const [movie, setMovie] = useState(null);
   const [status, setStatus] = useState('idle');
-
   const { movieId } = useParams();
 
-  console.log(movie);
+  const history = useHistory();
+  const location = useLocation();
 
   useEffect(() => {
     setStatus('pending');
@@ -29,28 +33,38 @@ export default function MovieDetailsPage() {
     });
   }, [movieId]);
 
+  const onClick = () => {
+    history.push(location.state.from);
+  };
+
   return (
     <>
       {status === 'error' && <p>Not found!!!</p>}
       {status === 'pending' && (
-        <RotatingLines
-          strokeColor="grey"
-          strokeWidth="5"
-          animationDuration="0.75"
-          width="50"
-          visible={true}
+        <Oval
+          height={50}
+          width={50}
+          color="#000"
+          wrapperStyle={{ display: 'flex', justifyContent: 'center' }}
+          secondaryColor="#f0"
+          strokeWidth={4}
+          strokeWidthSecondary={4}
         />
       )}
-      {status === 'resolve' && <MovieDetails movie={movie} movieId={movieId} />}
+      {status === 'resolve' && (
+        <MovieDetails movie={movie} onClick={onClick} location={location} />
+      )}
 
       <Suspense
         fallback={
-          <RotatingLines
-            strokeColor="grey"
-            strokeWidth="5"
-            animationDuration="0.75"
-            width="50"
-            visible={true}
+          <Oval
+            height={50}
+            width={50}
+            color="#000"
+            wrapperStyle={{ display: 'flex', justifyContent: 'center' }}
+            secondaryColor="#f0"
+            strokeWidth={4}
+            strokeWidthSecondary={4}
           />
         }
       >

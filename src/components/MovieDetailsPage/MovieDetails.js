@@ -1,11 +1,11 @@
 import styles from './MovieDetailsPage.module.css';
-import { Link, useHistory } from 'react-router-dom';
+import { Link, useRouteMatch } from 'react-router-dom';
 
-export default function MovieDetails({ movie, movieId }) {
-  const history = useHistory();
+export default function MovieDetails({ movie, onClick, location }) {
+  const { url } = useRouteMatch();
   return (
     <>
-      <button type="button" onClick={history.goBack} className={styles.button}>
+      <button type="button" onClick={onClick} className={styles.button}>
         Go Back
       </button>
       <div className={styles.section}>
@@ -55,10 +55,16 @@ export default function MovieDetails({ movie, movieId }) {
         </div>
       </div>
       <div className={styles.links}>
-        <Link className={styles.link} to={`/movies/${movieId}/cast`}>
+        <Link
+          className={styles.link}
+          to={{ pathname: `${url}/cast`, state: location.state }}
+        >
           Cast
         </Link>
-        <Link className={styles.link} to={`/movies/${movieId}/reviews`}>
+        <Link
+          className={styles.link}
+          to={{ pathname: `${url}/reviews`, state: location.state }}
+        >
           Reviews
         </Link>
       </div>
