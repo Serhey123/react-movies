@@ -2,6 +2,8 @@ import styles from './MoviesItems.module.css';
 
 import { Link, useLocation } from 'react-router-dom';
 
+import { imagePicker } from '../../utils/imagePicker';
+
 export default function MoviesItems({ movies }) {
   const location = useLocation();
 
@@ -19,11 +21,7 @@ export default function MoviesItems({ movies }) {
               >
                 <img
                   className={styles.img}
-                  src={
-                    movie.poster_path
-                      ? `https://image.tmdb.org/t/p/w300${movie.poster_path}`
-                      : 'https://www.chanchao.com.tw/images/default.jpg'
-                  }
+                  src={imagePicker(movie.poster_path)}
                 />
                 <div className={styles.overlay}>
                   <p className={styles.list__item_title}>

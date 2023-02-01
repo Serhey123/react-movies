@@ -4,8 +4,10 @@ import { useHistory, useLocation } from 'react-router-dom';
 
 import { Oval } from 'react-loader-spinner';
 
+import { Alert, AlertTitle } from '@mui/material';
+
 import MoviesItems from '../MoviesItems/MoviesItems';
-import Searchbar from './Searchbar';
+import SearchBar from '../SearchBar/SearchBar';
 
 export default function MoviesPage() {
   const history = useHistory();
@@ -37,7 +39,7 @@ export default function MoviesPage() {
 
   return (
     <>
-      <Searchbar onSubmit={onSubmit} />
+      <SearchBar onSubmit={onSubmit} />
       {status === 'resolved' && <MoviesItems movies={movies} />}
       {status === 'pending' && (
         <Oval
@@ -50,7 +52,12 @@ export default function MoviesPage() {
           strokeWidthSecondary={4}
         />
       )}
-      {status === 'error' && <p>Sorry, nothing found :(</p>}
+      {status === 'error' && (
+        <Alert severity="error">
+          <AlertTitle>Error</AlertTitle>
+          Sorry, nothing found :(
+        </Alert>
+      )}
     </>
   );
 }

@@ -1,12 +1,12 @@
 import PropTypes from 'prop-types';
 
 import React from 'react';
-import style from './Container.module.css';
+import style from './ContainerWrapper.module.css';
 
-export default function Container({ children }) {
+export default function ContainerWrapper({ children }) {
   return <div className={style.section}>{children}</div>;
 }
 
-Container.propTypes = {
+ContainerWrapper.propTypes = {
   children: PropTypes.array,
 };

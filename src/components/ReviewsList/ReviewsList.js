@@ -1,10 +1,14 @@
-import styles from './Reviews.module.css';
+import styles from './ReviewsList.module.css';
 import { useState, useEffect } from 'react';
 import { fetchMovieReview } from '../../services/fetchService';
 
 import { Oval } from 'react-loader-spinner';
+import { Alert, AlertTitle } from '@mui/material';
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
+import Typography from '@mui/material/Typography';
 
-export default function Reviews({ id }) {
+export default function ReviewsList({ id }) {
   const [reviews, setReviews] = useState(null);
   const [status, setStatus] = useState('idle');
   useEffect(() => {
@@ -23,9 +27,17 @@ export default function Reviews({ id }) {
     return (
       <ul>
         {reviews.results.map(r => (
-          <li key={r.id}>
-            <p className={styles.title}>{r.author}</p>
-            <p className={styles.content}>{r.content}</p>
+          <li key={r.id} className={styles.item}>
+            <Card sx={{ maxWidth: '100%' }}>
+              <CardContent>
+                <Typography gutterBottom variant="h5" component="div">
+                  {r.author}
+                </Typography>
+                <Typography variant="body2" color="text.secondary">
+                  {r.content}
+                </Typography>
+              </CardContent>
+            </Card>
           </li>
         ))}
       </ul>
@@ -47,6 +59,11 @@ export default function Reviews({ id }) {
   }
 
   if (status === 'error') {
-    return <p>We dont have reviews for this movie:(</p>;
+    return (
+      <Alert severity="error">
+        <AlertTitle>Sorry</AlertTitle>
+        We dont have reviews for this movie:(
+      </Alert>
+    );
   }
 }

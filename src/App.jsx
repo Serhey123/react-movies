@@ -1,8 +1,8 @@
 import { Component, lazy, Suspense } from 'react';
 import { Switch, Route } from 'react-router-dom';
 
-import Container from './components/Container/Container';
-import Navigation from './components/Navigation/Navigation';
+import ContainerWrapper from './components/ContainerWrapper/ContainerWrapper';
+import NavigationHeader from './components/NavigationHeader/NavigationHeader';
 
 import { Oval } from 'react-loader-spinner';
 
@@ -15,8 +15,8 @@ const MovieDetailsPage = lazy(() =>
 class App extends Component {
   render() {
     return (
-      <Container>
-        <Navigation />
+      <ContainerWrapper>
+        <NavigationHeader />
         <main className="main">
           <Suspense
             fallback={
@@ -46,7 +46,7 @@ class App extends Component {
             </Switch>
           </Suspense>
         </main>
-      </Container>
+      </ContainerWrapper>
     );
   }
 }

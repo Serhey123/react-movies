@@ -5,13 +5,18 @@ import {
   useLocation,
   useHistory,
 } from 'react-router-dom';
+
 import { useEffect, useState, lazy, Suspense } from 'react';
 import { Oval } from 'react-loader-spinner';
+import { Alert, AlertTitle } from '@mui/material';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import StyledBtn from '../StyledBtn/StyledBtn.js';
+
 import { fetchMovieById } from '../../services/fetchService';
 import MovieDetails from './MovieDetails';
 
-const Cast = lazy(() => import('../Cast/Cast.js'));
-const Reviews = lazy(() => import('../Reviews/Reviews.js'));
+const CastList = lazy(() => import('../CastList/CastList.js'));
+const ReviewsList = lazy(() => import('../ReviewsList/ReviewsList.js'));
 
 export default function MovieDetailsPage() {
   const [movie, setMovie] = useState(null);
@@ -39,7 +44,21 @@ export default function MovieDetailsPage() {
 
   return (
     <>
-      {status === 'error' && <p>Not found!!!</p>}
+      {status === 'error' && (
+        <>
+          <StyledBtn
+            variant="outlined"
+            onClick={onClick}
+            startIcon={<ArrowBackIcon />}
+          >
+            Go Back
+          </StyledBtn>
+          <Alert severity="error">
+            <AlertTitle>Error</AlertTitle>
+            Not found!!!
+          </Alert>
+        </>
+      )}
       {status === 'pending' && (
         <Oval
           height={50}
@@ -70,10 +89,10 @@ export default function MovieDetailsPage() {
       >
         <Switch>
           <Route path="/movies/:movieId/cast">
-            <Cast id={movieId} />
+            <CastList id={movieId} />
           </Route>
           <Route path="/movies/:movieId/reviews">
-            <Reviews id={movieId} />
+            <ReviewsList id={movieId} />
           </Route>
         </Switch>
       </Suspense>

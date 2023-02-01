@@ -1,9 +1,11 @@
 .title {
   margin-bottom: 5px;
-  font-size: 18px;
-  font-weight: 600;
 }
 
-.content {
+.info {
+  margin-bottom: 15px;
+}
+
+.list__item:last-child {
   margin-bottom: 10px;
 }

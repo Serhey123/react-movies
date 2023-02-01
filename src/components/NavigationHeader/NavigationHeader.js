@@ -1,13 +1,13 @@
-import styles from './Navigation.module.css';
+import styles from './NavigationHeader.module.css';
 import { NavLink } from 'react-router-dom';
 import logo from './logo.png';
 
-export default function Navigation() {
+export default function NavigationHeader() {
   return (
     <nav className={styles.nav}>
       <NavLink className={styles.logo} exact to="/">
         <img className={styles.logo__img} src={logo} alt="logo" />
-        <p>MoviesFolder</p>
+        <p className={styles.logo__text}>MoviesFolder</p>
       </NavLink>
       <div className={styles.nav__wrapper}>
         <NavLink className={styles.link} exact to="/">

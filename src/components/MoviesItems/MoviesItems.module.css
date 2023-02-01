@@ -42,5 +42,22 @@
 
 .img {
   height: 100%;
+  width: 100%;
   object-fit: cover;
+}
+
+@media screen and (max-width: 767px) {
+  .list__item {
+    width: 100%;
+  }
+}
+@media screen and (min-width: 768px) {
+  .list__item {
+    width: 235px;
+  }
+}
+@media screen and (min-width: 1280px) {
+  .list__item {
+    width: 280px;
+  }
 }

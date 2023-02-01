@@ -3,6 +3,7 @@
   flex-wrap: wrap;
   justify-content: space-between;
 }
+
 .list__item {
   display: flex;
   flex-direction: column;
@@ -14,4 +15,17 @@
   width: 100%;
   height: 250px;
   object-fit: cover;
+}
+
+.card {
+  height: 100%;
+}
+
+@media screen and (max-width: 767px) {
+  .list__item {
+    width: 100%;
+  }
+  .img {
+    background-size: contain !important;
+  }
 }
