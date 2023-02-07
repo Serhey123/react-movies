@@ -1,25 +1,24 @@
 import styles from './HomePage.module.css';
-import { useState, useEffect } from 'react';
-
-import MoviesItems from '../MoviesItems/MoviesItems';
-import { fetchTrending } from '../../services/fetchService';
 import { Oval } from 'react-loader-spinner';
+import { Alert, AlertTitle } from '@mui/material';
+import { useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { selectors, operations } from '../../redux/movies';
+import MoviesItems from '../MoviesItems/MoviesItems';
 
 export default function HomePage() {
-  const [movies, setMovies] = useState(null);
-  const [loader, setLoader] = useState(false);
+  const movies = useSelector(selectors.getTrendingMoviesList);
+  const isLoading = useSelector(selectors.getLoader);
+  const error = useSelector(selectors.getError);
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    setLoader(true);
-    fetchTrending().then(res => {
-      setMovies(res.results);
-      setLoader(false);
-    });
-  }, []);
+    dispatch(operations.fetchTrendingMovies());
+  }, [dispatch]);
 
   return (
     <>
-      {loader ? (
+      {isLoading && (
         <Oval
           height={50}
           width={50}
@@ -29,11 +28,18 @@ export default function HomePage() {
           strokeWidth={4}
           strokeWidthSecondary={4}
         />
-      ) : (
+      )}
+      {movies.length > 0 && (
         <div>
           <h2 className={styles.title}>Trending today:</h2>
-          {movies && <MoviesItems movies={movies} />}
+          <MoviesItems movies={movies} />
         </div>
+      )}
+      {error && (
+        <Alert severity="error">
+          <AlertTitle>Error</AlertTitle>
+          Something went wrong...
+        </Alert>
       )}
     </>
   );

@@ -1,9 +1,7 @@
 import styles from './SearchBar.module.css';
-import { useForm, Controller } from 'react-hook-form';
-
 import SearchIcon from '@mui/icons-material/Search';
 import IconButton from '@mui/material/IconButton';
-
+import { useForm, Controller } from 'react-hook-form';
 import FormInput from '../FormInput/FormInput';
 
 export default function Searchbar({ onSubmit }) {

@@ -1,39 +1,29 @@
 import styles from './CastList.module.css';
-import { useState, useEffect } from 'react';
-import { fetchMovieCast } from '../../services/fetchService';
-import { imagePicker } from '../../utils/imagePicker';
-
-import { Oval } from 'react-loader-spinner';
-
-import { Alert, AlertTitle } from '@mui/material';
-
 import Card from '@mui/material/Card';
-
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
-
 import Typography from '@mui/material/Typography';
+import { imagePicker } from '../../utils/imagePicker';
+import { Oval } from 'react-loader-spinner';
+import { Alert, AlertTitle } from '@mui/material';
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { operations, selectors } from '../../redux/movies';
 
 export default function CastList({ id }) {
-  const [actors, setActors] = useState(null);
-  const [status, setStatus] = useState('idle');
-  useEffect(() => {
-    setStatus('pending');
-    fetchMovieCast(id).then(res => {
-      if (res.cast.length === 0) {
-        setStatus('error');
-        return;
-      }
-      setActors(res);
-      setStatus('resolved');
-    });
-  }, []);
+  const dispatch = useDispatch();
+  const actors = useSelector(selectors.getCurrentMovieCast);
+  const isLoading = useSelector(selectors.getLoader);
 
-  if (status === 'resolved') {
+  useEffect(() => {
+    dispatch(operations.fetchCurrentMovieCast(id));
+  }, [id, dispatch]);
+
+  if (actors.length > 0) {
     return (
       <>
         <ul className={styles.list}>
-          {actors.cast.map(actr => (
+          {actors.map(actr => (
             <li key={actr.character + actr.id} className={styles.list__item}>
               <Card className={styles.card}>
                 <CardMedia
@@ -59,7 +49,7 @@ export default function CastList({ id }) {
     );
   }
 
-  if (status === 'pending') {
+  if (isLoading) {
     return (
       <Oval
         height={50}
@@ -73,7 +63,7 @@ export default function CastList({ id }) {
     );
   }
 
-  if (status === 'error') {
+  if (actors.length === 0) {
     return (
       <Alert severity="error">
         <AlertTitle>Sorry</AlertTitle>

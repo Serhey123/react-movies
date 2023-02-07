@@ -1,8 +1,6 @@
 import styles from './MoviesItems.module.css';
-
-import { Link, useLocation } from 'react-router-dom';
-
 import { imagePicker } from '../../utils/imagePicker';
+import { Link, useLocation } from 'react-router-dom';
 
 export default function MoviesItems({ movies }) {
   const location = useLocation();
@@ -22,6 +20,7 @@ export default function MoviesItems({ movies }) {
                 <img
                   className={styles.img}
                   src={imagePicker(movie.poster_path)}
+                  alt={movie.title || movie.name}
                 />
                 <div className={styles.overlay}>
                   <p className={styles.list__item_title}>

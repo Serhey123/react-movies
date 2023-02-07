@@ -1,10 +1,8 @@
 import styles from './MovieDetailsPage.module.css';
-import { Link, useRouteMatch } from 'react-router-dom';
-
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import StyledBtn from '../StyledBtn/StyledBtn.js';
-
 import { imagePicker } from '../../utils/imagePicker';
+import { Link, useRouteMatch } from 'react-router-dom';
 import MovieArticle from '../MovieArticle/MovieArticle';
 
 export default function MovieDetails({ movie, onClick, location }) {
@@ -22,7 +20,7 @@ export default function MovieDetails({ movie, onClick, location }) {
 
       <div className={styles.section}>
         <div>
-          <img src={imagePicker(movie.poster_path)} />
+          <img src={imagePicker(movie.poster_path)} alt={movie.title} />
         </div>
         <div className={styles.wrapper}>
           <h1 className={styles.name}>

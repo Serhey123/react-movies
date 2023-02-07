@@ -1,11 +1,9 @@
-import { useState, useEffect } from 'react';
-import { fetchMovie } from '../../services/fetchService';
-import { useHistory, useLocation } from 'react-router-dom';
-
 import { Oval } from 'react-loader-spinner';
-
 import { Alert, AlertTitle } from '@mui/material';
-
+import { useEffect } from 'react';
+import { useHistory, useLocation } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
+import { operations, selectors } from '../../redux/movies';
 import MoviesItems from '../MoviesItems/MoviesItems';
 import SearchBar from '../SearchBar/SearchBar';
 
@@ -13,8 +11,10 @@ export default function MoviesPage() {
   const history = useHistory();
   const location = useLocation();
 
-  const [movies, setMovies] = useState(null);
-  const [status, setStatus] = useState('idle');
+  const movies = useSelector(selectors.getMoviesList);
+  const isLoading = useSelector(selectors.getLoader);
+  const error = useSelector(selectors.getError);
+  const dispatch = useDispatch();
 
   const query = new URLSearchParams(location.search).get('query');
 
@@ -26,22 +26,14 @@ export default function MoviesPage() {
     if (!query) {
       return;
     }
-    setStatus('pending');
-    fetchMovie(query).then(res => {
-      if (res.results.length === 0) {
-        setStatus('error');
-        return;
-      }
-      setStatus('resolved');
-      setMovies(res.results);
-    });
-  }, [query]);
+    dispatch(operations.fetchMoviesList(query));
+  }, [query, dispatch]);
 
   return (
     <>
       <SearchBar onSubmit={onSubmit} />
-      {status === 'resolved' && <MoviesItems movies={movies} />}
-      {status === 'pending' && (
+      {movies.length > 0 && <MoviesItems movies={movies} />}
+      {isLoading && (
         <Oval
           height={50}
           width={50}
@@ -52,7 +44,7 @@ export default function MoviesPage() {
           strokeWidthSecondary={4}
         />
       )}
-      {status === 'error' && (
+      {error && (
         <Alert severity="error">
           <AlertTitle>Error</AlertTitle>
           Sorry, nothing found :(
