@@ -1,25 +1,31 @@
 import styles from './CastList.module.css';
+import { useState, useEffect } from 'react';
+import { fetchMovieCast } from '../../services/fetchService';
+import { imagePicker } from '../../utils/imagePicker';
+import { Oval } from 'react-loader-spinner';
+import { Alert, AlertTitle } from '@mui/material';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
-import { imagePicker } from '../../utils/imagePicker';
-import { Oval } from 'react-loader-spinner';
-import { Alert, AlertTitle } from '@mui/material';
-import { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { operations, selectors } from '../../redux/movies';
 
 export default function CastList({ id }) {
-  const dispatch = useDispatch();
-  const actors = useSelector(selectors.getCurrentMovieCast);
-  const isLoading = useSelector(selectors.getLoader);
+  const [actors, setActors] = useState(null);
+  const [status, setStatus] = useState('idle');
 
   useEffect(() => {
-    dispatch(operations.fetchCurrentMovieCast(id));
-  }, [id, dispatch]);
+    setStatus('pending');
+    fetchMovieCast(id).then(res => {
+      if (res.length === 0) {
+        setStatus('error');
+        return;
+      }
+      setActors(res);
+      setStatus('resolved');
+    });
+  }, [id]);
 
-  if (actors.length > 0) {
+  if (status === 'resolved') {
     return (
       <>
         <ul className={styles.list}>
@@ -49,7 +55,7 @@ export default function CastList({ id }) {
     );
   }
 
-  if (isLoading) {
+  if (status === 'pending') {
     return (
       <Oval
         height={50}
@@ -63,7 +69,7 @@ export default function CastList({ id }) {
     );
   }
 
-  if (actors.length === 0) {
+  if (status === 'error') {
     return (
       <Alert severity="error">
         <AlertTitle>Sorry</AlertTitle>

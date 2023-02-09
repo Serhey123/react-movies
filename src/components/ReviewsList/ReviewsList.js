@@ -1,23 +1,29 @@
 import styles from './ReviewsList.module.css';
+import { useState, useEffect } from 'react';
+import { fetchMovieReview } from '../../services/fetchService';
 import { Oval } from 'react-loader-spinner';
 import { Alert, AlertTitle } from '@mui/material';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
-import { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { operations, selectors } from '../../redux/movies';
 
 export default function ReviewsList({ id }) {
-  const dispatch = useDispatch();
-  const reviews = useSelector(selectors.getCurrentMovieReview);
-  const isLoading = useSelector(selectors.getLoader);
+  const [reviews, setReviews] = useState(null);
+  const [status, setStatus] = useState('idle');
 
   useEffect(() => {
-    dispatch(operations.fetchCurrentMovieReview(id));
-  }, [id, dispatch]);
+    setStatus('pending');
+    fetchMovieReview(id).then(res => {
+      if (res.length === 0) {
+        setStatus('error');
+        return;
+      }
+      setReviews(res);
+      setStatus('resolved');
+    });
+  }, [id]);
 
-  if (reviews.length > 0) {
+  if (status === 'resolved') {
     return (
       <ul>
         {reviews.map(r => (
@@ -38,7 +44,7 @@ export default function ReviewsList({ id }) {
     );
   }
 
-  if (isLoading) {
+  if (status === 'pending') {
     return (
       <Oval
         height={50}
@@ -52,7 +58,7 @@ export default function ReviewsList({ id }) {
     );
   }
 
-  if (reviews.length === 0) {
+  if (status === 'error') {
     return (
       <Alert severity="error">
         <AlertTitle>Sorry</AlertTitle>

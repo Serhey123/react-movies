@@ -11,6 +11,7 @@ const MoviesPage = lazy(() => import('./components/MoviesPage/MoviesPage.js'));
 const MovieDetailsPage = lazy(() =>
   import('./components/MovieDetailsPage/MovieDetailsPage.js'),
 );
+const FavoritePage = lazy(() => import('./components/FavoritePage/FavoritePage.js'));
 
 class App extends Component {
   render() {
@@ -32,6 +33,10 @@ class App extends Component {
             }
           >
             <Switch>
+              <Route path="/favorite">
+                <FavoritePage />
+              </Route>
+
               <Route path="/movies/:movieId">
                 <MovieDetailsPage />
               </Route>

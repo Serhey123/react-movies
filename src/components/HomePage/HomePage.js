@@ -1,10 +1,10 @@
-import styles from './HomePage.module.css';
 import { Oval } from 'react-loader-spinner';
 import { Alert, AlertTitle } from '@mui/material';
 import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { selectors, operations } from '../../redux/movies';
+import { selectors, operations } from 'redux/movies';
 import MoviesItems from '../MoviesItems/MoviesItems';
+import Title from '../Title/Title';
 
 export default function HomePage() {
   const movies = useSelector(selectors.getTrendingMoviesList);
@@ -18,6 +18,12 @@ export default function HomePage() {
 
   return (
     <>
+      {movies.length > 0 && (
+        <div>
+          <Title text={'Trending today'} />
+          <MoviesItems movies={movies} />
+        </div>
+      )}
       {isLoading && (
         <Oval
           height={50}
@@ -28,12 +34,6 @@ export default function HomePage() {
           strokeWidth={4}
           strokeWidthSecondary={4}
         />
-      )}
-      {movies.length > 0 && (
-        <div>
-          <h2 className={styles.title}>Trending today:</h2>
-          <MoviesItems movies={movies} />
-        </div>
       )}
       {error && (
         <Alert severity="error">

@@ -1,12 +1,12 @@
 .list {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, 280px);
+  gap: 20px;
+  justify-content: center;
 }
 .list__item {
   width: 280px;
   position: relative;
-  margin-bottom: 20px;
   transition: transform 0.3s ease;
 }
 .list__item:hover {
@@ -49,15 +49,6 @@
 @media screen and (max-width: 767px) {
   .list__item {
     width: 100%;
-  }
-}
-@media screen and (min-width: 768px) {
-  .list__item {
-    width: 235px;
-  }
-}
-@media screen and (min-width: 1280px) {
-  .list__item {
-    width: 280px;
+    height: 450px;
   }
 }

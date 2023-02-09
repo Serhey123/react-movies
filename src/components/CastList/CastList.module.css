@@ -1,14 +1,14 @@
 .list {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, 180px);
+  gap: 20px;
+  justify-content: center;
 }
 
 .list__item {
   display: flex;
   flex-direction: column;
   width: 180px;
-  margin-bottom: 20px;
 }
 
 .img {

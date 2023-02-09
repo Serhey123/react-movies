@@ -26,7 +26,6 @@
   width: 50px;
   height: 50px;
 }
-
 .nav__wrapper {
   display: flex;
   justify-content: space-between;
@@ -51,6 +50,6 @@
 
 @media screen and (min-width: 768px) {
   .nav__wrapper {
-    min-width: 200px;
+    min-width: 300px;
   }
 }

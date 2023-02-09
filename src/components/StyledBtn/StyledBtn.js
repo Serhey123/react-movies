@@ -1,8 +1,7 @@
 import Button from '@mui/material/Button';
 import { styled } from '@mui/material/styles';
 
-const StyledBtn = styled(Button)({
-  marginBottom: '20px',
+export const StyledBtn = styled(Button)({
   borderColor: 'black',
   color: 'black',
   '&:hover': {
@@ -12,4 +11,12 @@ const StyledBtn = styled(Button)({
   },
 });
 
-export default StyledBtn;
+export const ContainedBtn = styled(Button)({
+  backgroundColor: 'black',
+  color: 'white',
+  '&:hover': {
+    backgroundColor: 'grey',
+    color: 'white',
+    boxShadow: 'none',
+  },
+});

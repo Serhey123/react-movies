@@ -19,12 +19,12 @@ const FormInput = styled(TextField)({
   '& input:valid:focus + fieldset': {
     borderColor: 'black',
     borderLeftWidth: 6,
-    padding: '4px !important', // override inline-style
+    padding: '4px !important',
   },
   '& div.Mui-error.Mui-focused fieldset': {
     borderColor: 'red',
     borderLeftWidth: 6,
-    padding: '4px !important', // override inline-style
+    padding: '4px !important',
   },
 });
 

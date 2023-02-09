@@ -3,7 +3,7 @@ import { Alert, AlertTitle } from '@mui/material';
 import { useEffect } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import { operations, selectors } from '../../redux/movies';
+import { operations, selectors } from 'redux/movies';
 import MoviesItems from '../MoviesItems/MoviesItems';
 import SearchBar from '../SearchBar/SearchBar';
 

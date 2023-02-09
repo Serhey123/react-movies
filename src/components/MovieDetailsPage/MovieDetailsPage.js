@@ -5,35 +5,37 @@ import {
   useLocation,
   useHistory,
 } from 'react-router-dom';
-
-import { useEffect, lazy, Suspense } from 'react';
+import { useState, useEffect, lazy, Suspense } from 'react';
+import { fetchMovieById } from '../../services/fetchService';
 import { Oval } from 'react-loader-spinner';
 import { Alert, AlertTitle } from '@mui/material';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import StyledBtn from '../StyledBtn/StyledBtn.js';
-
+import { StyledBtn } from '../StyledBtn/StyledBtn.js';
 import MovieDetails from './MovieDetails';
-import { useDispatch, useSelector } from 'react-redux';
-
-import { operations, selectors } from '../../redux/movies';
-
+import styles from './MovieDetailsPage.module.css';
 const CastList = lazy(() => import('../CastList/CastList.js'));
 const ReviewsList = lazy(() => import('../ReviewsList/ReviewsList.js'));
 
 export default function MovieDetailsPage() {
+  const [movie, setMovie] = useState(null);
+  const [status, setStatus] = useState('idle');
   const { movieId } = useParams();
 
   const history = useHistory();
   const location = useLocation();
 
-  const movie = useSelector(selectors.getCurrentMovie);
-  const isLoading = useSelector(selectors.getLoader);
-  const error = useSelector(selectors.getError);
-  const dispatch = useDispatch();
-
   useEffect(() => {
-    dispatch(operations.fetchCurrentMovie(movieId));
-  }, [movieId, dispatch]);
+    setStatus('pending');
+    fetchMovieById(movieId)
+      .then(res => {
+        setMovie(res);
+        setStatus('resolve');
+      })
+      .catch(err => {
+        setStatus('error');
+        return;
+      });
+  }, [movieId]);
 
   const onClick = () => {
     if (!location.state) {
@@ -45,22 +47,24 @@ export default function MovieDetailsPage() {
 
   return (
     <>
-      {error && (
+      {status === 'error' && (
         <>
-          <StyledBtn
-            variant="outlined"
-            onClick={onClick}
-            startIcon={<ArrowBackIcon />}
-          >
-            Go Back
-          </StyledBtn>
+          <div className={styles.links}>
+            <StyledBtn
+              variant="outlined"
+              onClick={onClick}
+              startIcon={<ArrowBackIcon />}
+            >
+              Go Back
+            </StyledBtn>
+          </div>
           <Alert severity="error">
             <AlertTitle>Error</AlertTitle>
             Not found!!!
           </Alert>
         </>
       )}
-      {isLoading && (
+      {status === 'pending' && (
         <Oval
           height={50}
           width={50}
@@ -71,7 +75,7 @@ export default function MovieDetailsPage() {
           strokeWidthSecondary={4}
         />
       )}
-      {movie && (
+      {status === 'resolve' && (
         <>
           <MovieDetails movie={movie} onClick={onClick} location={location} />
           <Suspense

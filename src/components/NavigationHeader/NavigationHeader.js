@@ -1,6 +1,6 @@
 import styles from './NavigationHeader.module.css';
 import { NavLink } from 'react-router-dom';
-import logo from './logo.png';
+import logo from 'images/logo.png';
 
 export default function NavigationHeader() {
   return (
@@ -15,6 +15,9 @@ export default function NavigationHeader() {
         </NavLink>
         <NavLink className={styles.link} to="/movies">
           Movies
+        </NavLink>
+        <NavLink className={styles.link} to="/favorite">
+          Favorite
         </NavLink>
       </div>
     </nav>
