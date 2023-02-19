@@ -13,9 +13,11 @@ export const StyledBtn = styled(Button)({
 
 export const ContainedBtn = styled(Button)({
   backgroundColor: 'black',
+  border: 'none',
   color: 'white',
   '&:hover': {
     backgroundColor: 'grey',
+    border: 'none',
     color: 'white',
     boxShadow: 'none',
   },

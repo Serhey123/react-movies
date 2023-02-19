@@ -9,22 +9,25 @@ import { Link, useRouteMatch } from 'react-router-dom';
 import MovieArticle from '../MovieArticle/MovieArticle';
 import MovieArticleList from '../MovieArticleList/MovieArticleList';
 import { useDispatch, useSelector } from 'react-redux';
-import { actions, selectors } from 'redux/movies';
+import { operations, selectors } from 'redux/movies';
+import { Oval } from 'react-loader-spinner';
 
 export default function MovieDetails({ movie, onClick, location }) {
   const { url } = useRouteMatch();
-
+  const isLoading = useSelector(selectors.getLoader);
   const movies = useSelector(selectors.getFavoriteMoviesList);
+  const currentMovieInStorage = movies.find(mov => mov.id === movie.id);
+
   const dispatch = useDispatch();
 
-  const isInStorage = movies.find(mov => mov.id === movie.id);
-
   const addHandlerBtn = () => {
-    dispatch(actions.addFavoriteMovie(movie));
+    dispatch(operations.addFavoriteMovie(movie));
+    dispatch(operations.fetchFavoriteMovies());
   };
 
   const deleteHandlerBtn = () => {
-    dispatch(actions.deleteFavoriteMovie(movie));
+    dispatch(operations.deleteFavoriteMovie(currentMovieInStorage.docId));
+    dispatch(operations.fetchFavoriteMovies());
   };
 
   return (
@@ -37,7 +40,22 @@ export default function MovieDetails({ movie, onClick, location }) {
         >
           Go Back
         </StyledBtn>
-        {isInStorage ? (
+        {isLoading ? (
+          <StyledBtn
+            variant="outlined"
+            startIcon={
+              <Oval
+                height={16}
+                width={16}
+                color="#000"
+                wrapperStyle={{ display: 'flex', justifyContent: 'center' }}
+                secondaryColor="#f0"
+                strokeWidth={4}
+                strokeWidthSecondary={4}
+              />
+            }
+          />
+        ) : currentMovieInStorage ? (
           <ContainedBtn
             variant="contained"
             startIcon={<DeleteIcon sx={{ color: 'white' }} />}

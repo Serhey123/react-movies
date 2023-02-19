@@ -1,0 +1,14 @@
+.nav__wrapper {
+  display: flex;
+  justify-content: space-between;
+  min-width: 300px;
+}
+.link {
+  font-size: 16px;
+  color: black;
+  transition: all 0.4s ease;
+}
+.link:hover {
+  color: grey;
+  transform: scale(1.05);
+}

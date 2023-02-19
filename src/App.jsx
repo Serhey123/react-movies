@@ -1,27 +1,47 @@
-import { Component, lazy, Suspense } from 'react';
-import { Switch, Route } from 'react-router-dom';
+import { lazy, Suspense, useEffect } from 'react';
+import { Switch } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { selectors, operations } from 'redux/auth';
 
 import ContainerWrapper from './components/ContainerWrapper/ContainerWrapper';
 import NavigationHeader from './components/NavigationHeader/NavigationHeader';
 
 import { Oval } from 'react-loader-spinner';
+import PrivateRoute from 'components/PrivateRoute/PrivateRoute';
+import PublicRoute from 'components/PublicRoute/PublicRoute';
 
 const HomePage = lazy(() => import('./components/HomePage/HomePage.js'));
 const MoviesPage = lazy(() => import('./components/MoviesPage/MoviesPage.js'));
 const MovieDetailsPage = lazy(() =>
   import('./components/MovieDetailsPage/MovieDetailsPage.js'),
 );
-const FavoritePage = lazy(() => import('./components/FavoritePage/FavoritePage.js'));
+const FavoritePage = lazy(() =>
+  import('./components/FavoritePage/FavoritePage.js'),
+);
+const LoginPage = lazy(() => import('./components/LoginPage/LoginPage.js'));
+const SignupPage = lazy(() => import('./components/SignupPage/SignupPage.js'));
+const ProfilePage = lazy(() =>
+  import('./components/ProfilePage/ProfilePage.js'),
+);
 
-class App extends Component {
-  render() {
-    return (
-      <ContainerWrapper>
-        <NavigationHeader />
-        <main className="main">
-          <Suspense
-            fallback={
-              <Oval
+function App() {
+  const dispatch = useDispatch();
+  const token = useSelector(selectors.getToken);
+
+  useEffect(() => {
+    if (token) {
+      dispatch(operations.fetchCurrentUser(token));
+    }
+  }, [dispatch, token]);
+
+  return (
+    <ContainerWrapper>
+      <NavigationHeader />
+
+      <main className="main">
+        <Suspense
+          fallback={
+            <Oval
               height={50}
               width={50}
               color="#000"
@@ -30,30 +50,41 @@ class App extends Component {
               strokeWidth={4}
               strokeWidthSecondary={4}
             />
-            }
-          >
-            <Switch>
-              <Route path="/favorite">
-                <FavoritePage />
-              </Route>
+          }
+        >
+          <Switch>
+            <PublicRoute path="/login" restricted>
+              <LoginPage />
+            </PublicRoute>
 
-              <Route path="/movies/:movieId">
-                <MovieDetailsPage />
-              </Route>
+            <PublicRoute path="/signup" restricted>
+              <SignupPage />
+            </PublicRoute>
 
-              <Route path="/movies">
-                <MoviesPage />
-              </Route>
+            <PrivateRoute path="/favorite">
+              <FavoritePage />
+            </PrivateRoute>
 
-              <Route path="/">
-                <HomePage />
-              </Route>
-            </Switch>
-          </Suspense>
-        </main>
-      </ContainerWrapper>
-    );
-  }
+            <PrivateRoute path="/profile">
+              <ProfilePage />
+            </PrivateRoute>
+
+            <PublicRoute path="/movies/:movieId">
+              <MovieDetailsPage />
+            </PublicRoute>
+
+            <PrivateRoute path="/movies">
+              <MoviesPage />
+            </PrivateRoute>
+
+            <PublicRoute path="/">
+              <HomePage />
+            </PublicRoute>
+          </Switch>
+        </Suspense>
+      </main>
+    </ContainerWrapper>
+  );
 }
 
 export default App;

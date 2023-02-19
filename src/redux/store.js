@@ -1,5 +1,6 @@
 import { configureStore, getDefaultMiddleware } from '@reduxjs/toolkit';
 import { moviesReducer } from './movies/movies-reducers';
+import authReducer from './auth/auth-slice';
 import {
   persistStore,
   persistReducer,
@@ -12,15 +13,22 @@ import {
 } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 
-const persistConfig = {
+const moviesPersistConfig = {
   key: 'movies',
   storage,
-  blacklist: ['moviesList', 'trendingMoviesList', 'isLoading', 'error'],
+  whitelist: ['favoriteMoviesList'],
+};
+
+const authPersistConfig = {
+  key: 'auth',
+  storage,
+  whitelist: ['token'],
 };
 
 export const store = configureStore({
   reducer: {
-    movies: persistReducer(persistConfig, moviesReducer),
+    movies: persistReducer(moviesPersistConfig, moviesReducer),
+    auth: persistReducer(authPersistConfig, authReducer),
   },
   middleware: getDefaultMiddleware({
     serializableCheck: {

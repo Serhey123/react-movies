@@ -1,8 +1,12 @@
 import { createReducer, combineReducers } from '@reduxjs/toolkit';
 
-import { fetchTrendingMovies, fetchMoviesList } from './movies-operations';
-
-import { addFavoriteMovie, deleteFavoriteMovie } from './movies-actions';
+import {
+  fetchTrendingMovies,
+  fetchMoviesList,
+  fetchFavoriteMovies,
+  addFavoriteMovie,
+  deleteFavoriteMovie,
+} from './movies-operations';
 
 const moviesList = createReducer([], {
   [fetchMoviesList.fulfilled]: (_, { payload }) => payload,
@@ -15,20 +19,25 @@ const trendingMoviesList = createReducer([], {
 });
 
 const favoriteMoviesList = createReducer([], {
-  [addFavoriteMovie.type]: (state, { payload }) => [payload, ...state],
-  [deleteFavoriteMovie.type]: (state, { payload }) =>
-    state.filter(el => el.id !== payload.id),
+  [fetchFavoriteMovies.fulfilled]: (_, { payload }) => payload,
+  [fetchFavoriteMovies.rejected]: state => state,
 });
 
 const isLoading = createReducer(false, {
   [fetchMoviesList.rejected]: () => false,
   [fetchTrendingMovies.rejected]: () => false,
+  [addFavoriteMovie.rejected]: () => false,
+  [deleteFavoriteMovie.rejected]: () => false,
 
   [fetchMoviesList.pending]: () => true,
   [fetchTrendingMovies.pending]: () => true,
+  [addFavoriteMovie.pending]: () => true,
+  [deleteFavoriteMovie.pending]: () => true,
 
   [fetchMoviesList.fulfilled]: () => false,
   [fetchTrendingMovies.fulfilled]: () => false,
+  [addFavoriteMovie.fulfilled]: () => false,
+  [deleteFavoriteMovie.fulfilled]: () => false,
 });
 
 const error = createReducer(false, {
