@@ -13,12 +13,6 @@ import {
 } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 
-const moviesPersistConfig = {
-  key: 'movies',
-  storage,
-  whitelist: ['favoriteMoviesList'],
-};
-
 const authPersistConfig = {
   key: 'auth',
   storage,
@@ -27,7 +21,7 @@ const authPersistConfig = {
 
 export const store = configureStore({
   reducer: {
-    movies: persistReducer(moviesPersistConfig, moviesReducer),
+    movies: moviesReducer,
     auth: persistReducer(authPersistConfig, authReducer),
   },
   middleware: getDefaultMiddleware({
