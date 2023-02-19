@@ -16,3 +16,4 @@ https://serhey123.github.io/react-movies
 - react-redux hooks
 - redux thunk
 - redux persist
+- firebase 
