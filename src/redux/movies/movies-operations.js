@@ -17,7 +17,6 @@ export const fetchTrendingMovies = createAsyncThunk(
       const data = await fetchTrending();
       return data;
     } catch (error) {
-      console.error(error);
       throw new Error(error);
     }
   },
@@ -33,7 +32,6 @@ export const fetchMoviesList = createAsyncThunk(
       }
       return data;
     } catch (error) {
-      console.error(error);
       throw new Error(error);
     }
   },
@@ -49,7 +47,6 @@ export const addFavoriteMovie = createAsyncThunk(
       );
       await addDoc(collectionRef, movie);
     } catch (error) {
-      console.error(error);
       throw new Error(error);
     }
   },
@@ -65,7 +62,6 @@ export const deleteFavoriteMovie = createAsyncThunk(
       );
       await deleteDoc(docRef);
     } catch (error) {
-      console.error(error);
       throw new Error(error);
     }
   },
@@ -79,15 +75,16 @@ export const fetchFavoriteMovies = createAsyncThunk(
         db,
         `/favorite-movies/${auth?.currentUser?.uid}/mov`,
       );
-      console.log(collectionRef);
       const data = await getDocs(collectionRef);
       const filterData = data.docs.map(doc => ({
         ...doc.data(),
         docId: doc.id,
+        createTime: doc._document.createTime.timestamp.seconds,
       }));
-      return filterData;
+      const sortedData = filterData.sort((a, b) => b.createTime - a.createTime);
+
+      return sortedData;
     } catch (error) {
-      console.error(error);
       throw new Error(error);
     }
   },

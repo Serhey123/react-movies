@@ -6,3 +6,4 @@ export const getLoader = state => state.auth.isLoading;
 export const getLoginError = state => state.auth.error.logIn;
 export const getSignUpError = state => state.auth.error.signUp;
 export const getUser = state => state.auth.user;
+export const getIsFetching = state => state.auth.isFetchingCurrentUser;

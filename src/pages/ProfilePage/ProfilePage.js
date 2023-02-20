@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux';
 import styles from './ProfilePage.module.css';
 import { joiResolver } from '@hookform/resolvers/joi';
 import Joi from 'joi';
-import FormInput from '../FormInput/FormInput';
+import FormInput from 'components/FormInput/FormInput';
 import { useForm, Controller } from 'react-hook-form';
 import { operations, selectors as authSelectors } from 'redux/auth';
 import { selectors as movieSelectors } from 'redux/movies';
@@ -15,6 +15,7 @@ import MovieArticle from 'components/MovieArticle/MovieArticle';
 import Paper from '@mui/material/Paper';
 import { Oval } from 'react-loader-spinner';
 import { useState, useEffect } from 'react';
+import DialogModal from 'components/DialogModal/DialogModal';
 
 const schema = Joi.object({
   name: Joi.string().alphanum().min(3).max(30).required(),
@@ -37,30 +38,25 @@ export default function ProfilePage() {
     defaultValues: { name: user.name, image: null },
     resolver: joiResolver(schema),
   });
-  const submit = data => {
-    if (
-      (data.name === '' && data.image === null) ||
-      (data.name === user.name && data.image === null)
-    ) {
-      return;
-    }
-    console.log(data);
-    dispatch(operations.updateCurrentUser(data));
-    reset();
-  };
 
   const [selectedFile, setSelectedFile] = useState(null);
   const [preview, setPreview] = useState(null);
+  const [disabled, setDisabled] = useState(true);
 
   const img = watch('image');
+  const name = watch('name');
 
   useEffect(() => {
+    if (name === user.name && img === null) {
+      setDisabled(true);
+      return;
+    }
+    setDisabled(false);
     if (!img) {
       return;
     }
-
     setSelectedFile(img[0]);
-  }, [img]);
+  }, [img, name, user.name]);
 
   useEffect(() => {
     if (!selectedFile) {
@@ -72,6 +68,18 @@ export default function ProfilePage() {
 
     return () => URL.revokeObjectURL(objectUrl);
   }, [selectedFile]);
+
+  const submit = data => {
+    if (data.name === user.name && data.image === null) {
+      return;
+    }
+    dispatch(operations.updateCurrentUser(data));
+  };
+
+  const onDiscard = () => {
+    setPreview(null);
+    reset();
+  };
 
   return (
     <>
@@ -117,26 +125,39 @@ export default function ProfilePage() {
               />
             )}
           />
-          {isLoading ? (
-            <StyledBtn
-              variant="outlined"
-              startIcon={
-                <Oval
-                  height={16}
-                  width={16}
-                  color="#000"
-                  wrapperStyle={{ display: 'flex', justifyContent: 'center' }}
-                  secondaryColor="#f0"
-                  strokeWidth={4}
-                  strokeWidthSecondary={4}
-                />
-              }
+          <div className={styles.btn__wrapper}>
+            <DialogModal
+              btn="Discard"
+              disabled={disabled}
+              title="Are you sure?"
+              text="Changes you made may not be saved."
+              agreeFn={onDiscard}
             />
-          ) : (
-            <ContainedBtn variant="contained" type="submit">
-              Save
-            </ContainedBtn>
-          )}
+            {isLoading ? (
+              <StyledBtn
+                variant="outlined"
+                startIcon={
+                  <Oval
+                    height={9}
+                    width={10}
+                    color="#000"
+                    wrapperStyle={{ display: 'flex', justifyContent: 'center' }}
+                    secondaryColor="#f0"
+                    strokeWidth={8}
+                    strokeWidthSecondary={8}
+                  />
+                }
+              />
+            ) : (
+              <ContainedBtn
+                disabled={disabled}
+                variant="contained"
+                type="submit"
+              >
+                Save
+              </ContainedBtn>
+            )}
+          </div>
         </form>
         <Paper className={styles.info}>
           <MovieArticle title="User name" content={user.name} />

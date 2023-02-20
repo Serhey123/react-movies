@@ -1,13 +1,13 @@
-import styles from './MovieDetailsPage.module.css';
+import styles from './MovieDetails.module.css';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import DeleteIcon from '@mui/icons-material/Delete';
 import Rating from '@mui/material/Rating';
-import { ContainedBtn, StyledBtn } from '../StyledBtn/StyledBtn.js';
+import { ContainedBtn, StyledBtn } from 'components/StyledBtn/StyledBtn.js';
 import { imagePicker } from 'utils/imagePicker';
 import { Link, useRouteMatch } from 'react-router-dom';
-import MovieArticle from '../MovieArticle/MovieArticle';
-import MovieArticleList from '../MovieArticleList/MovieArticleList';
+import MovieArticle from 'components/MovieArticle/MovieArticle';
+import MovieArticleList from 'components/MovieArticleList/MovieArticleList';
 import { useDispatch, useSelector } from 'react-redux';
 import { operations, selectors } from 'redux/movies';
 import { Oval } from 'react-loader-spinner';

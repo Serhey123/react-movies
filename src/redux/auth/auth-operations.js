@@ -27,8 +27,7 @@ export const register = createAsyncThunk('auth/register', async data => {
 
     return user;
   } catch (error) {
-    console.error(error);
-    throw new Error('User with that email is already exist!');
+    throw new Error(error);
   }
 });
 
@@ -39,11 +38,9 @@ export const logIn = createAsyncThunk('auth/login', async data => {
       data.email,
       data.password,
     );
-    console.log(user);
     return user;
   } catch (error) {
-    console.error(error);
-    throw new Error('Invalid email or password!');
+    throw new Error(error);
   }
 });
 
@@ -51,7 +48,7 @@ export const logOut = createAsyncThunk('auth/logout', async () => {
   try {
     await signOut(auth);
   } catch (error) {
-    console.error(error);
+    throw new Error(error);
   }
 });
 
@@ -65,10 +62,10 @@ export const fetchCurrentUser = createAsyncThunk(
           idToken: token,
         },
       );
-      console.log(data.users[0]);
+
       return data.users[0];
     } catch (error) {
-      console.error(error);
+      throw new Error(error);
     }
   },
 );
@@ -81,9 +78,6 @@ export const updateCurrentUser = createAsyncThunk(
         await updateProfile(auth.currentUser, {
           displayName: data.name,
         });
-
-        console.log(auth.currentUser);
-
         return auth.currentUser;
       }
       const fileFolderRef = ref(
@@ -100,11 +94,9 @@ export const updateCurrentUser = createAsyncThunk(
         photoURL: userImg,
       });
 
-      console.log(auth.currentUser);
-
       return auth.currentUser;
     } catch (error) {
-      console.error(error);
+      throw new Error(error);
     }
   },
 );

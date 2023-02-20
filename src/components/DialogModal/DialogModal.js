@@ -6,7 +6,13 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 
-export default function DialogModal({ btn, title, text, agreeFn }) {
+export default function DialogModal({
+  btn,
+  disabled = false,
+  title,
+  text,
+  agreeFn,
+}) {
   const [open, setOpen] = useState(false);
 
   const handleClickOpen = () => {
@@ -24,7 +30,11 @@ export default function DialogModal({ btn, title, text, agreeFn }) {
 
   return (
     <div>
-      <StyledBtn variant="outlined" onClick={handleClickOpen}>
+      <StyledBtn
+        disabled={disabled}
+        variant="outlined"
+        onClick={handleClickOpen}
+      >
         {btn}
       </StyledBtn>
       <Dialog

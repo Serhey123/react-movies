@@ -1,0 +1,11 @@
+.links {
+  display: flex;
+  justify-content: space-between;
+  padding: 20px 10px 30px;
+}
+
+@media screen and (min-width: 768px) {
+  .links {
+    width: 200px;
+  }
+}

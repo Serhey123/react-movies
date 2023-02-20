@@ -6,15 +6,15 @@ import {
   useHistory,
 } from 'react-router-dom';
 import { useState, useEffect, lazy, Suspense } from 'react';
-import { fetchMovieById } from '../../services/fetchService';
+import { fetchMovieById } from 'services/fetchService';
 import { Oval } from 'react-loader-spinner';
 import { Alert, AlertTitle } from '@mui/material';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import { StyledBtn } from '../StyledBtn/StyledBtn.js';
-import MovieDetails from './MovieDetails';
+import { StyledBtn } from 'components/StyledBtn/StyledBtn.js';
+import MovieDetails from '../../components/MovieDetails/MovieDetails';
 import styles from './MovieDetailsPage.module.css';
-const CastList = lazy(() => import('../CastList/CastList.js'));
-const ReviewsList = lazy(() => import('../ReviewsList/ReviewsList.js'));
+const CastList = lazy(() => import('components/CastList/CastList.js'));
+const ReviewsList = lazy(() => import('components/ReviewsList/ReviewsList.js'));
 
 export default function MovieDetailsPage() {
   const [movie, setMovie] = useState(null);

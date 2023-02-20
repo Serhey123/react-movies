@@ -3,8 +3,8 @@ import { Alert, AlertTitle } from '@mui/material';
 import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { selectors, operations } from 'redux/movies';
-import MoviesItems from '../MoviesItems/MoviesItems';
-import Title from '../Title/Title';
+import MoviesItems from 'components/MoviesItems/MoviesItems';
+import Title from 'components/Title/Title';
 
 export default function HomePage() {
   const movies = useSelector(selectors.getTrendingMoviesList);

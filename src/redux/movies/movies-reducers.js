@@ -28,16 +28,19 @@ const isLoading = createReducer(false, {
   [fetchTrendingMovies.rejected]: () => false,
   [addFavoriteMovie.rejected]: () => false,
   [deleteFavoriteMovie.rejected]: () => false,
+  [fetchFavoriteMovies.rejected]: () => false,
 
   [fetchMoviesList.pending]: () => true,
   [fetchTrendingMovies.pending]: () => true,
   [addFavoriteMovie.pending]: () => true,
   [deleteFavoriteMovie.pending]: () => true,
+  [fetchFavoriteMovies.pending]: () => true,
 
   [fetchMoviesList.fulfilled]: () => false,
   [fetchTrendingMovies.fulfilled]: () => false,
   [addFavoriteMovie.fulfilled]: () => false,
   [deleteFavoriteMovie.fulfilled]: () => false,
+  [fetchFavoriteMovies.fulfilled]: () => false,
 });
 
 const error = createReducer(false, {

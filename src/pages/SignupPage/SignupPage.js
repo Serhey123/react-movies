@@ -1,26 +1,37 @@
-import styles from './LoginPage.module.css';
-import FormInput from '../FormInput/FormInput';
+import styles from './SignupPage.module.css';
+import FormInput from 'components/FormInput/FormInput';
 import { ContainedBtn } from 'components/StyledBtn/StyledBtn';
 import Paper from '@mui/material/Paper';
 import { Link } from 'react-router-dom';
 import { useForm, Controller } from 'react-hook-form';
+
+import { useDispatch } from 'react-redux';
+import { register } from 'redux/auth/auth-operations';
+
 import { joiResolver } from '@hookform/resolvers/joi';
 import Joi from 'joi';
-import { useDispatch } from 'react-redux';
-import { logIn } from 'redux/auth/auth-operations';
+
 import RegisterHeader from 'components/RegisterHeader/RegisterHeader';
 import { selectors } from 'redux/auth';
 
 const schema = Joi.object({
-  password: Joi.string().min(8),
+  name: Joi.string().alphanum().min(3).max(30).required(),
 
-  email: Joi.string().email({
-    minDomainSegments: 2,
-    tlds: { allow: ['com', 'net', 'ua'] },
+  password: Joi.string().min(8).required(),
+
+  refPassword: Joi.valid(Joi.ref('password')).messages({
+    'any.only': "passwords don't match",
   }),
-});
 
-export default function LoginPage() {
+  email: Joi.string()
+    .email({
+      minDomainSegments: 2,
+      tlds: { allow: ['com', 'net', 'ua'] },
+    })
+    .required(),
+}).required();
+
+export default function SignupPage() {
   const dispatch = useDispatch();
 
   const {
@@ -29,12 +40,12 @@ export default function LoginPage() {
     reset,
     formState: { errors },
   } = useForm({
-    defaultValues: { email: '', password: '' },
+    defaultValues: { name: '', email: '', password: '', refPassword: '' },
     resolver: joiResolver(schema),
   });
 
   const submit = async data => {
-    dispatch(logIn(data));
+    dispatch(register(data));
 
     reset();
   };
@@ -42,12 +53,28 @@ export default function LoginPage() {
   return (
     <>
       <RegisterHeader
-        title="Log In"
-        errorMessage="Invalid email or password!"
-        selector={selectors.getLoginError}
+        title="Sign Up"
+        errorMessage="User with that email is already exist!"
+        selector={selectors.getSignUpError}
       />
       <Paper className={styles.wrapper}>
         <form onSubmit={handleSubmit(submit)} className={styles.form}>
+          <Controller
+            name="name"
+            control={control}
+            render={({ field }) => (
+              <FormInput
+                {...field}
+                label="Name*"
+                type="text"
+                size="small"
+                autoComplete="off"
+                className={styles.input}
+                error={!!errors.name}
+                helperText={errors?.name?.message}
+              />
+            )}
+          />
           <Controller
             name="email"
             control={control}
@@ -80,16 +107,32 @@ export default function LoginPage() {
               />
             )}
           />
+          <Controller
+            name="refPassword"
+            control={control}
+            render={({ field }) => (
+              <FormInput
+                {...field}
+                label="Confirm password*"
+                type="password"
+                size="small"
+                autoComplete="off"
+                className={styles.input}
+                error={!!errors.refPassword}
+                helperText={errors?.refPassword?.message}
+              />
+            )}
+          />
           <ContainedBtn
             variant="contained"
             type="submit"
             className={styles.btn}
           >
-            log in
+            sign up
           </ContainedBtn>
         </form>
-        <Link to="/signup" className={styles.link}>
-          Don't have an account? Sign Up
+        <Link to="/login" className={styles.link}>
+          Already have an account? Log in
         </Link>
       </Paper>
     </>
