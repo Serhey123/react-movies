@@ -7,7 +7,7 @@ import {
 } from 'react-router-dom';
 import { useState, useEffect, lazy, Suspense } from 'react';
 import { fetchMovieById } from 'services/fetchService';
-import { Oval } from 'react-loader-spinner';
+import Loader from 'components/Loader/Loader';
 import { Alert, AlertTitle } from '@mui/material';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { StyledBtn } from 'components/StyledBtn/StyledBtn.js';
@@ -64,33 +64,11 @@ export default function MovieDetailsPage() {
           </Alert>
         </>
       )}
-      {status === 'pending' && (
-        <Oval
-          height={50}
-          width={50}
-          color="#000"
-          wrapperStyle={{ display: 'flex', justifyContent: 'center' }}
-          secondaryColor="#f0"
-          strokeWidth={4}
-          strokeWidthSecondary={4}
-        />
-      )}
+      {status === 'pending' && <Loader />}
       {status === 'resolve' && (
         <>
           <MovieDetails movie={movie} onClick={onClick} location={location} />
-          <Suspense
-            fallback={
-              <Oval
-                height={50}
-                width={50}
-                color="#000"
-                wrapperStyle={{ display: 'flex', justifyContent: 'center' }}
-                secondaryColor="#f0"
-                strokeWidth={4}
-                strokeWidthSecondary={4}
-              />
-            }
-          >
+          <Suspense fallback={<Loader />}>
             <Switch>
               <Route path="/movies/:movieId/cast">
                 <CastList id={movieId} />

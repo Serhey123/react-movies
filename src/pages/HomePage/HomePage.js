@@ -1,4 +1,4 @@
-import { Oval } from 'react-loader-spinner';
+import Loader from 'components/Loader/Loader';
 import { Alert, AlertTitle } from '@mui/material';
 import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
@@ -24,17 +24,7 @@ export default function HomePage() {
           <MoviesItems movies={movies} />
         </div>
       )}
-      {isLoading && (
-        <Oval
-          height={50}
-          width={50}
-          color="#000"
-          wrapperStyle={{ display: 'flex', justifyContent: 'center' }}
-          secondaryColor="#f0"
-          strokeWidth={4}
-          strokeWidthSecondary={4}
-        />
-      )}
+      {isLoading && <Loader />}
       {error && (
         <Alert severity="error">
           <AlertTitle>Error</AlertTitle>

@@ -1,21 +1,21 @@
 import styles from './MovieDetails.module.css';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import FavoriteIcon from '@mui/icons-material/Favorite';
-import DeleteIcon from '@mui/icons-material/Delete';
 import Rating from '@mui/material/Rating';
-import { ContainedBtn, StyledBtn } from 'components/StyledBtn/StyledBtn.js';
+import { StyledBtn } from 'components/StyledBtn/StyledBtn.js';
 import { imagePicker } from 'utils/imagePicker';
 import { Link, useRouteMatch } from 'react-router-dom';
 import MovieArticle from 'components/MovieArticle/MovieArticle';
 import MovieArticleList from 'components/MovieArticleList/MovieArticleList';
 import { useDispatch, useSelector } from 'react-redux';
-import { operations, selectors } from 'redux/movies';
-import { Oval } from 'react-loader-spinner';
+import { operations, selectors as movieSelectors } from 'redux/movies';
+import { selectors as authSelectors } from 'redux/auth';
+import btnPropsPicker from 'utils/btnPropsPicker';
 
 export default function MovieDetails({ movie, onClick, location }) {
   const { url } = useRouteMatch();
-  const isLoading = useSelector(selectors.getLoader);
-  const movies = useSelector(selectors.getFavoriteMoviesList);
+  const isLoading = useSelector(movieSelectors.getLoader);
+  const movies = useSelector(movieSelectors.getFavoriteMoviesList);
+  const isLoggedIn = useSelector(authSelectors.getIsLoggedIn);
   const currentMovieInStorage = movies.find(mov => mov.id === movie.id);
 
   const dispatch = useDispatch();
@@ -40,37 +40,17 @@ export default function MovieDetails({ movie, onClick, location }) {
         >
           Go Back
         </StyledBtn>
-        {isLoading ? (
+        {isLoggedIn && (
           <StyledBtn
             variant="outlined"
-            startIcon={
-              <Oval
-                height={16}
-                width={16}
-                color="#000"
-                wrapperStyle={{ display: 'flex', justifyContent: 'center' }}
-                secondaryColor="#f0"
-                strokeWidth={4}
-                strokeWidthSecondary={4}
-              />
-            }
+            {...btnPropsPicker(
+              currentMovieInStorage,
+              deleteHandlerBtn,
+              addHandlerBtn,
+            )}
+            loading={isLoading}
+            loadingPosition="start"
           />
-        ) : currentMovieInStorage ? (
-          <ContainedBtn
-            variant="contained"
-            startIcon={<DeleteIcon sx={{ color: 'white' }} />}
-            onClick={deleteHandlerBtn}
-          >
-            Delete
-          </ContainedBtn>
-        ) : (
-          <StyledBtn
-            variant="outlined"
-            startIcon={<FavoriteIcon />}
-            onClick={addHandlerBtn}
-          >
-            Favorite
-          </StyledBtn>
         )}
       </div>
 
@@ -100,17 +80,13 @@ export default function MovieDetails({ movie, onClick, location }) {
               />
             </div>
           )}
-          <MovieArticle title={'Overview'} content={movie.overview} />
-
-          <MovieArticle title={'Release date'} content={movie.release_date} />
-
-          <MovieArticleList title={'Genres'} content={movie.genres} />
-
+          <MovieArticle title="Overview" content={movie.overview} />
+          <MovieArticle title="Release date" content={movie.release_date} />
+          <MovieArticleList title="Genres" content={movie.genres} />
           <MovieArticleList
-            title={'Countries'}
+            title="Countries"
             content={movie.production_countries}
           />
-
           {movie.tagline && <h2>"{movie.tagline}"</h2>}
         </div>
       </div>

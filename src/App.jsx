@@ -5,7 +5,7 @@ import { selectors, operations as authOperations } from 'redux/auth';
 import { operations as moviesOperations } from 'redux/movies';
 import ContainerWrapper from './components/ContainerWrapper/ContainerWrapper';
 import NavigationHeader from './components/NavigationHeader/NavigationHeader';
-import { Oval } from 'react-loader-spinner';
+import Loader from 'components/Loader/Loader';
 import PrivateRoute from 'components/PrivateRoute/PrivateRoute';
 import PublicRoute from 'components/PublicRoute/PublicRoute';
 import { onAuthStateChanged } from 'firebase/auth';
@@ -43,19 +43,7 @@ function App() {
         <NavigationHeader />
 
         <main className="main">
-          <Suspense
-            fallback={
-              <Oval
-                height={50}
-                width={50}
-                color="#000"
-                wrapperStyle={{ display: 'flex', justifyContent: 'center' }}
-                secondaryColor="#f0"
-                strokeWidth={4}
-                strokeWidthSecondary={4}
-              />
-            }
-          >
+          <Suspense fallback={<Loader />}>
             <Switch>
               <PublicRoute path="/login" restricted>
                 <LoginPage />

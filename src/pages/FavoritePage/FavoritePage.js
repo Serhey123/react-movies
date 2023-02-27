@@ -6,7 +6,7 @@ import Title from '../../components/Title/Title';
 import { useEffect } from 'react';
 import { operations } from 'redux/movies';
 import { useDispatch } from 'react-redux';
-import { Oval } from 'react-loader-spinner';
+import Loader from 'components/Loader/Loader';
 
 export default function FavoritePage() {
   const dispatch = useDispatch();
@@ -20,15 +20,7 @@ export default function FavoritePage() {
   return (
     <>
       {isLoading ? (
-        <Oval
-          height={50}
-          width={50}
-          color="#000"
-          wrapperStyle={{ display: 'flex', justifyContent: 'center' }}
-          secondaryColor="#f0"
-          strokeWidth={4}
-          strokeWidthSecondary={4}
-        />
+        <Loader />
       ) : movies.length === 0 ? (
         <Alert severity="info">
           <AlertTitle>There is nothing here yet...</AlertTitle>

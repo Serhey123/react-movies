@@ -2,7 +2,7 @@ import styles from './CastList.module.css';
 import { useState, useEffect } from 'react';
 import { fetchMovieCast } from '../../services/fetchService';
 import { imagePicker } from '../../utils/imagePicker';
-import { Oval } from 'react-loader-spinner';
+import Loader from 'components/Loader/Loader';
 import { Alert, AlertTitle } from '@mui/material';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
@@ -56,17 +56,7 @@ export default function CastList({ id }) {
   }
 
   if (status === 'pending') {
-    return (
-      <Oval
-        height={50}
-        width={50}
-        color="#000"
-        wrapperStyle={{ display: 'flex', justifyContent: 'center' }}
-        secondaryColor="#f0"
-        strokeWidth={4}
-        strokeWidthSecondary={4}
-      />
-    );
+    return <Loader />;
   }
 
   if (status === 'error') {

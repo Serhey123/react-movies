@@ -1,4 +1,4 @@
-import { Oval } from 'react-loader-spinner';
+import Loader from 'components/Loader/Loader';
 import { Alert, AlertTitle } from '@mui/material';
 import { useEffect } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
@@ -32,18 +32,8 @@ export default function MoviesPage() {
   return (
     <>
       <SearchBar onSubmit={onSubmit} />
+      {isLoading && <Loader />}
       {movies.length > 0 && <MoviesItems movies={movies} />}
-      {isLoading && (
-        <Oval
-          height={50}
-          width={50}
-          color="#000"
-          wrapperStyle={{ display: 'flex', justifyContent: 'center' }}
-          secondaryColor="#f0"
-          strokeWidth={4}
-          strokeWidthSecondary={4}
-        />
-      )}
       {error && (
         <Alert severity="error">
           <AlertTitle>Error</AlertTitle>

@@ -4,36 +4,16 @@ import { ContainedBtn } from 'components/StyledBtn/StyledBtn';
 import Paper from '@mui/material/Paper';
 import { Link } from 'react-router-dom';
 import { useForm, Controller } from 'react-hook-form';
-
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { register } from 'redux/auth/auth-operations';
-
 import { joiResolver } from '@hookform/resolvers/joi';
-import Joi from 'joi';
-
 import RegisterHeader from 'components/RegisterHeader/RegisterHeader';
 import { selectors } from 'redux/auth';
-
-const schema = Joi.object({
-  name: Joi.string().alphanum().min(3).max(30).required(),
-
-  password: Joi.string().min(8).required(),
-
-  refPassword: Joi.valid(Joi.ref('password')).messages({
-    'any.only': "passwords don't match",
-  }),
-
-  email: Joi.string()
-    .email({
-      minDomainSegments: 2,
-      tlds: { allow: ['com', 'net', 'ua'] },
-    })
-    .required(),
-}).required();
+import schema from 'schemas/signUpSchema';
 
 export default function SignupPage() {
   const dispatch = useDispatch();
-
+  const isLoading = useSelector(selectors.getLoader);
   const {
     handleSubmit,
     control,
@@ -43,10 +23,8 @@ export default function SignupPage() {
     defaultValues: { name: '', email: '', password: '', refPassword: '' },
     resolver: joiResolver(schema),
   });
-
   const submit = async data => {
     dispatch(register(data));
-
     reset();
   };
 
@@ -126,6 +104,7 @@ export default function SignupPage() {
           <ContainedBtn
             variant="contained"
             type="submit"
+            loading={isLoading}
             className={styles.btn}
           >
             sign up

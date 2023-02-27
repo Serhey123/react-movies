@@ -1,5 +1,5 @@
 import Avatar from '@mui/material/Avatar';
-import { StyledBtn, ContainedBtn } from 'components/StyledBtn/StyledBtn';
+import { ContainedBtn } from 'components/StyledBtn/StyledBtn';
 import { useSelector } from 'react-redux';
 import styles from './ProfilePage.module.css';
 import { joiResolver } from '@hookform/resolvers/joi';
@@ -13,7 +13,6 @@ import Title from 'components/Title/Title';
 import EditIcon from '@mui/icons-material/Edit';
 import MovieArticle from 'components/MovieArticle/MovieArticle';
 import Paper from '@mui/material/Paper';
-import { Oval } from 'react-loader-spinner';
 import { useState, useEffect } from 'react';
 import DialogModal from 'components/DialogModal/DialogModal';
 
@@ -133,30 +132,15 @@ export default function ProfilePage() {
               text="Changes you made may not be saved."
               agreeFn={onDiscard}
             />
-            {isLoading ? (
-              <StyledBtn
-                variant="outlined"
-                startIcon={
-                  <Oval
-                    height={9}
-                    width={10}
-                    color="#000"
-                    wrapperStyle={{ display: 'flex', justifyContent: 'center' }}
-                    secondaryColor="#f0"
-                    strokeWidth={8}
-                    strokeWidthSecondary={8}
-                  />
-                }
-              />
-            ) : (
-              <ContainedBtn
-                disabled={disabled}
-                variant="contained"
-                type="submit"
-              >
-                Save
-              </ContainedBtn>
-            )}
+
+            <ContainedBtn
+              disabled={disabled}
+              variant="contained"
+              type="submit"
+              loading={isLoading}
+            >
+              Save
+            </ContainedBtn>
           </div>
         </form>
         <Paper className={styles.info}>

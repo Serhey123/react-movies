@@ -1,7 +1,8 @@
-import Button from '@mui/material/Button';
+import LoadingButton from '@mui/lab/LoadingButton';
 import { styled } from '@mui/material/styles';
 
-export const StyledBtn = styled(Button)({
+export const StyledBtn = styled(LoadingButton)({
+  minWidth: '100px',
   borderColor: 'black',
   color: 'black',
   '&:hover': {
@@ -11,7 +12,8 @@ export const StyledBtn = styled(Button)({
   },
 });
 
-export const ContainedBtn = styled(Button)({
+export const ContainedBtn = styled(LoadingButton)({
+  minWidth: '100px',
   backgroundColor: 'black',
   border: 'none',
   color: 'white',

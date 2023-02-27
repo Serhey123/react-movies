@@ -5,24 +5,15 @@ import Paper from '@mui/material/Paper';
 import { Link } from 'react-router-dom';
 import { useForm, Controller } from 'react-hook-form';
 import { joiResolver } from '@hookform/resolvers/joi';
-import Joi from 'joi';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { logIn } from 'redux/auth/auth-operations';
 import RegisterHeader from 'components/RegisterHeader/RegisterHeader';
 import { selectors } from 'redux/auth';
-
-const schema = Joi.object({
-  password: Joi.string().min(8),
-
-  email: Joi.string().email({
-    minDomainSegments: 2,
-    tlds: { allow: ['com', 'net', 'ua'] },
-  }),
-});
+import schema from 'schemas/logInSchema';
 
 export default function LoginPage() {
   const dispatch = useDispatch();
-
+  const isLoading = useSelector(selectors.getLoader);
   const {
     handleSubmit,
     control,
@@ -84,6 +75,7 @@ export default function LoginPage() {
             variant="contained"
             type="submit"
             className={styles.btn}
+            loading={isLoading}
           >
             log in
           </ContainedBtn>
